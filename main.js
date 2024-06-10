@@ -1,11 +1,12 @@
 class Product {
-    constructor(id, url, image, title, price, description) {
+    constructor(id, url, image, title, price, description, device) {
         this.id = id;
         this.url = url;
         this.image = image;
         this.title = title;
         this.price = price;
         this.description = description;
+        this.device = device;
     }
 
     fetchAndCropImage(imageSrc, callback, errorCallback) {
@@ -90,7 +91,6 @@ class Product {
     }
 
     render() {
-        const device = detectDevice();
         const widgetDiv = document.createElement('div');
         widgetDiv.className = 'widget';
 
@@ -99,12 +99,22 @@ class Product {
         }, () => {
             img.src = this.image; // Fallback to the original image if cropping fails
         });
-
-        var link = document.createElement('link');
+        if (this.device === 'Mobile') {
+            var link = document.createElement('link');
             link.rel = 'stylesheet';
             link.href = 'https://widgettest-bir.pages.dev/style.css';
             document.head.appendChild(link);
             const productContainer = document.getElementById('productContainer');
+        }
+
+        else {
+            var link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = 'https://widgettest-bir.pages.dev/style.css';
+                document.head.appendChild(link);
+                const productContainer = document.getElementById('productContainer');
+        }
+
 
         widgetDiv.innerHTML = `
             <a href="${this.url}" target="_blank" style="text-decoration: none; width: 100%; height: 100%;">
@@ -122,7 +132,6 @@ class Product {
                         <p class="item__content--price">${this.price.replace(/(\d)\s+(?=\d)/g, '$1')}</p>
                     </div>
                 </div>
-                <p>${device}</p>
             </a>
         `;
 
@@ -151,16 +160,23 @@ function detectDevice() {
 
 
 function fetchProducts() {
+    const device = detectDevice();
     fetch('https://events.contkit.com/sample/recommended')
         .then(response => response.json())
         .then(data => {
             const productContainer = document.getElementById('productContainer');
             productContainer.innerHTML = '';
+            if (device === 'Mobile') {
+                const item = data[0];
+                const product = new Product(item.id, item.url, item.image, item.title, item.price, item.description, device);
+                productContainer.appendChild(product.render());
+            }
+            else {
             data.forEach(item => {
-                const product = new Product(item.id, item.url, item.image, item.title, item.price, item.description);
+                const product = new Product(item.id, item.url, item.image, item.title, item.price, item.description, device);
                 productContainer.appendChild(product.render());
             });
-        })
+        }})
         .catch(error => {
             console.error('There was an error fetching the products:', error);
         });
