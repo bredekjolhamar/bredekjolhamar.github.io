@@ -138,8 +138,11 @@ class Product {
         const img = widgetDiv.querySelector('img');
 
         // Set up hover effect
-        img.onmouseover = () => img.style.transform = 'scale(1.1)';
-        img.onmouseout = () => img.style.transform = 'scale(1)';
+        if (device != 'Mobile') {
+            img.onmouseover = () => img.style.transform = 'scale(1.1)';
+            img.onmouseout = () => img.style.transform = 'scale(1)';
+        }
+
 
         return widgetDiv;
     }
@@ -183,5 +186,4 @@ function fetchProducts() {
 }
 
 // Init
-console.log(navigator.userAgent);
 fetchProducts();
