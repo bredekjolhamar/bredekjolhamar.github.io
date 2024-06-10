@@ -102,17 +102,17 @@ class Product {
         if (this.device === 'Mobile') {
             var link = document.createElement('link');
             link.rel = 'stylesheet';
-            link.href = 'https://widgettest-bir.pages.dev/style.css';
+            link.href = 'https://widgettest-bir.pages.dev/styleMobile.css';
             document.head.appendChild(link);
             const productContainer = document.getElementById('productContainer');
         }
 
         else {
             var link = document.createElement('link');
-                link.rel = 'stylesheet';
-                link.href = 'https://widgettest-bir.pages.dev/style.css';
-                document.head.appendChild(link);
-                const productContainer = document.getElementById('productContainer');
+            link.rel = 'stylesheet';
+            link.href = 'https://widgettest-bir.pages.dev/style.css';
+            document.head.appendChild(link);
+            const productContainer = document.getElementById('productContainer');
         }
 
 
