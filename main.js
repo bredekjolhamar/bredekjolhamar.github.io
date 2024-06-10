@@ -90,6 +90,7 @@ class Product {
     }
 
     render() {
+        const device = detectDevice();
         const widgetDiv = document.createElement('div');
         widgetDiv.className = 'widget';
 
@@ -121,6 +122,7 @@ class Product {
                         <p class="item__content--price">${this.price.replace(/(\d)\s+(?=\d)/g, '$1')}</p>
                     </div>
                 </div>
+                <p>${device}</p>
             </a>
         `;
 
@@ -133,6 +135,20 @@ class Product {
         return widgetDiv;
     }
 }
+
+function detectDevice() {
+    const userAgent = navigator.userAgent;
+
+    if (/Mobi|Android/i.test(userAgent)) {
+        return "Mobile"
+        // Apply mobile-specific logic here
+    } else {
+        return "Not Mobile"
+        // Apply desktop-specific logic here
+    }
+}
+
+
 
 function fetchProducts() {
     fetch('https://events.contkit.com/sample/recommended')
